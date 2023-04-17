@@ -101,6 +101,7 @@ class BinarySearchTree {
             this.tree = null;
           } else if (currentNode.left && currentNode.right) {
             const newCurrentNode = this.min(currentNode.right);
+            this.remove(newCurrentNode.data);
             newCurrentNode.left = currentNode.left;
             newCurrentNode.right = currentNode.right;
             this.tree = newCurrentNode;
@@ -114,6 +115,7 @@ class BinarySearchTree {
             parentNode.left = null;
           } else if (currentNode.left && currentNode.right) {
             const newCurrentNode = this.min(currentNode.right);
+           
             newCurrentNode.left = currentNode.left;
             newCurrentNode.right = currentNode.right;
             parentNode.left = newCurrentNode;
@@ -127,6 +129,7 @@ class BinarySearchTree {
             parentNode.right = null;
           } else if (currentNode.left && currentNode.right) {
             const newCurrentNode = this.min(currentNode.right);
+            
             newCurrentNode.left = currentNode.left;
             newCurrentNode.right = currentNode.right;
             parentNode.right = newCurrentNode;
@@ -169,20 +172,20 @@ class BinarySearchTree {
     }
   }
 }
-const tree = new BinarySearchTree();
+// const tree = new BinarySearchTree();
 
-tree.add(9);
-tree.add(14);
-tree.add(2);
-tree.add(6);
-tree.add(128);
-tree.add(8);
-tree.add(31);
-tree.add(54);
-tree.add(1);
-tree.remove(14);
-tree.remove(8);
-tree.remove(9);
+// tree.add(9);
+// tree.add(14);
+// tree.add(2);
+// tree.add(6);
+// tree.add(128);
+// tree.add(8);
+// tree.add(31);
+// tree.add(54);
+// tree.add(1);
+// tree.remove(14);
+// tree.remove(8);
+// tree.remove(9);
 // console.log(tree.has(14), false);
 // console.log(tree.has(8), false);
 // console.log(tree.has(9), false);
