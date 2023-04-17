@@ -26,16 +26,17 @@ function removeKFromList(l, k) {
   if (l === null) {
     return 1;
   }
+  while(l && l.value === k){
+    l = l.next
+  }
 
-  
 let element = l;
-let nextElement = element.next
 
-  while (nextElement) {
-    if (nextElement.value === k) {
-      element.next = nextElement.next;
+  while (element && element.next) {
+    if (element.next.value === k) {
+      element.next = element.next.next;
     } else {
-      element = nextElement.next;
+      element = element.next;
     }
   }
   return l;
