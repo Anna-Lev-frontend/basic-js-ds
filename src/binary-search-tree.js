@@ -102,7 +102,6 @@ class BinarySearchTree {
           } else if (currentNode.left && currentNode.right) {
             const newCurrentNode = this.min(currentNode.right);
             this.remove(newCurrentNode.data);
-
             newCurrentNode.left = currentNode.left;
             newCurrentNode.right = currentNode.right;
             this.tree = newCurrentNode;
@@ -116,7 +115,7 @@ class BinarySearchTree {
             parentNode.left = null;
           } else if (currentNode.left && currentNode.right) {
             const newCurrentNode = this.min(currentNode.right);
-           
+            this.remove(newCurrentNode.data);
             newCurrentNode.left = currentNode.left;
             newCurrentNode.right = currentNode.right;
             parentNode.left = newCurrentNode;
@@ -130,7 +129,7 @@ class BinarySearchTree {
             parentNode.right = null;
           } else if (currentNode.left && currentNode.right) {
             const newCurrentNode = this.min(currentNode.right);
-
+            this.remove(newCurrentNode.data);
             newCurrentNode.left = currentNode.left;
             newCurrentNode.right = currentNode.right;
             parentNode.right = newCurrentNode;
@@ -185,7 +184,6 @@ class BinarySearchTree {
 // tree.remove(6);
 // tree.remove(2);
 // console.log(tree.max(), 54);
-
 
 module.exports = {
   BinarySearchTree,
