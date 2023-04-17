@@ -25,7 +25,7 @@ class BinarySearchTree {
       this.tree = node;
       return this.tree;
     }
-    let currentNode = this.tree; //текущая node (10 верхушка)
+    let currentNode = this.tree; 
     let stop = false;
     while (!stop) {
       if (currentNode.data < node.data) {
@@ -37,17 +37,17 @@ class BinarySearchTree {
         }
       } else {
         if (currentNode.left === null) {
-          currentNode.left = node; //записали
-          stop = true; // остановили цикл
+          currentNode.left = node; 
+          stop = true; 
         } else {
           currentNode = currentNode.left;
         }
       }
     }
   }
-  //data это аргумент функции
+  
   has(data) {
-    //5
+  
     const foundNode = this.find(data);
     if (foundNode) {
       return true;
@@ -88,77 +88,81 @@ class BinarySearchTree {
     if (typeof data !== "number") {
       return null;
     }
-    let stop = false;
-    let currentNode = this.tree;
-    let foundNode;
-    let parentNode;
 
-    while (!stop) {
-      if (currentNode.data === data) {
-        stop = true;
-        if (!parentNode) {
-          if (!currentNode.left && !currentNode.right) {
-            this.tree = null;
-          } else if (currentNode.left && currentNode.right) {
-            const newCurrentNode = this.min(currentNode.right);
-            this.remove(newCurrentNode.data);
-            newCurrentNode.left = currentNode.left;
-            newCurrentNode.right = currentNode.right;
-            this.tree = newCurrentNode;
-          } else if (!currentNode.right) {
-            this.tree = currentNode.left;
-          } else if (!currentNode.left) {
-            this.tree = currentNode.right;
-          }
-        } else if (parentNode.left === currentNode) {
-          if (!currentNode.left && !currentNode.right) {
-            parentNode.left = null;
-          } else if (currentNode.left && currentNode.right) {
-            const newCurrentNode = this.min(currentNode.right);
-            this.remove(newCurrentNode.data);
-            newCurrentNode.left = currentNode.left;
-            newCurrentNode.right = currentNode.right;
-            parentNode.left = newCurrentNode;
-          } else if (!currentNode.right) {
-            parentNode.left = currentNode.left;
-          } else if (!currentNode.left) {
-            parentNode.left = currentNode.right;
-          }
-        } else {
-          if (!currentNode.left && !currentNode.right) {
-            parentNode.right = null;
-          } else if (currentNode.left && currentNode.right) {
-            const newCurrentNode = this.min(currentNode.right);
-            this.remove(newCurrentNode.data);
-            newCurrentNode.left = currentNode.left;
-            newCurrentNode.right = currentNode.right;
-            parentNode.right = newCurrentNode;
-          } else if (!currentNode.right) {
-            parentNode.right = currentNode.left;
-          } else if (!currentNode.left) {
-            parentNode.right = currentNode.right;
-          }
-        }
+    let currentNode = this.tree;
+    let parentNode = null;
+    let foundNode = null;
+
+    while (currentNode !== null && currentNode.data !== data) {
+      if (data < currentNode.data) {
+        parentNode = currentNode;
+        currentNode = currentNode.left;
       } else {
-        if (currentNode.data === null) {
-          stop = true;
-        }
-        if (currentNode.data < data) {
-          // 7 < 5
-          parentNode = currentNode;
-          currentNode = currentNode.right;
-        } else {
-          parentNode = currentNode;
-          currentNode = currentNode.left;
-        }
+        parentNode = currentNode;
+        currentNode = currentNode.right;
       }
     }
+
+    
+    if (currentNode === null) {
+      return null;
+    }
+
+    foundNode = currentNode;
+
+ 
+    if (currentNode.left === null && currentNode.right === null) {
+      if (parentNode === null) {
+        this.tree = null;
+      } else if (parentNode.left === currentNode) {
+        parentNode.left = null;
+      } else {
+        parentNode.right = null;
+      }
+    }
+    // case 2: node has one child
+    else if (currentNode.left === null) {
+      if (parentNode === null) {
+        this.tree = currentNode.right;
+      } else if (parentNode.left === currentNode) {
+        parentNode.left = currentNode.right;
+      } else {
+        parentNode.right = currentNode.right;
+      }
+    } else if (currentNode.right === null) {
+      if (parentNode === null) {
+        this.tree = currentNode.left;
+      } else if (parentNode.left === currentNode) {
+        parentNode.left = currentNode.left;
+      } else {
+        parentNode.right = currentNode.left;
+      }
+    }
+    // case 3: node has two children
+    else {
+      let minRightNode = currentNode.right;
+      let minRightParent = currentNode;
+
+      while (minRightNode.left !== null) {
+        minRightParent = minRightNode;
+        minRightNode = minRightNode.left;
+      }
+
+      currentNode.data = minRightNode.data;
+
+      if (minRightParent.left === minRightNode) {
+        minRightParent.left = minRightNode.right;
+      } else {
+        minRightParent.right = minRightNode.right;
+      }
+    }
+
     return foundNode;
   }
 
   min(node = this.tree) {
     if (!node.left) {
-      return node;
+      return node.data;
     } else {
       return this.min(node.left);
     }
@@ -166,24 +170,12 @@ class BinarySearchTree {
 
   max(node = this.tree) {
     if (!node.right) {
-      return node;
+      return node.data;
     } else {
-      return this.min(node.right);
+      return this.max(node.right);
     }
   }
 }
-// const tree = new BinarySearchTree();
-// tree.add(9);
-// tree.add(14);
-// tree.add(54);
-// tree.add(2);
-// tree.add(6);
-// tree.add(8);
-// tree.add(31);
-// tree.add(1);
-// tree.remove(6);
-// tree.remove(2);
-// console.log(tree.max(), 54);
 
 module.exports = {
   BinarySearchTree,
